@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forensic Stock Chart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0c1410;
+    --bg-panel: #121c18;
+    --bg-elev: #182521;
+    --ink: #e8e4d8;
+    --ink-dim: #9ca39a;
+    --ink-faint: #6b726b;
+    --rule: #1f2a25;
+    --rule-hi: #2f3d36;
+    --amber: #d4a93e;
+    --amber-glow: rgba(212, 169, 62, 0.15);
+    --red: #d4574a;
+    --green: #7fa878;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg-deep);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+    opacity: 0.02; pointer-events: none; z-index: 1; mix-blend-mode: overlay;
+  }
+  .page { max-width: 1500px; margin: 0 auto; padding: 36px 40px; position: relative; z-index: 2; }
+
+  /* MASTHEAD */
+  .mast {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding-bottom: 24px; border-bottom: 1px solid var(--rule);
+    margin-bottom: 32px; gap: 40px; flex-wrap: wrap;
+  }
+  .mast-left .kicker {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--amber); letter-spacing: 0.2em;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .mast-left h1 {
+    font-family: 'Fraunces', serif; font-weight: 400;
+    font-size: 44px; line-height: 1.05; letter-spacing: -0.01em;
+  }
+  .mast-left h1 em { font-style: italic; color: var(--amber); font-weight: 300; }
+  .mast-left .sub {
+    margin-top: 8px; font-family: 'Fraunces', serif; font-style: italic;
+    font-size: 16px; color: var(--ink-dim); max-width: 620px;
+  }
+  .mast-right {
+    display: flex; gap: 16px; align-items: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+  .mast-right .limit-info {
+    color: var(--ink-faint); text-transform: uppercase;
+    text-align: right; line-height: 1.6;
+  }
+  .mast-right .limit-info strong {
+    color: var(--amber); font-weight: 500;
+  }
+  .mast-right .logout-form button {
+    background: transparent; border: 1px solid var(--rule-hi);
+    color: var(--ink-dim); padding: 8px 14px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .mast-right .logout-form button:hover {
+    color: var(--red); border-color: var(--red);
+  }
+
+  /* SEARCH */
+  .search-section {
+    background: var(--bg-panel); border: 1px solid var(--rule);
+    padding: 32px; margin-bottom: 24px;
+  }
+  .search-row {
+    display: flex; gap: 12px; align-items: stretch;
+  }
+  .search-input {
+    flex: 1;
+    background: var(--bg-deep); border: 1px solid var(--rule-hi);
+    color: var(--ink); padding: 16px 20px;
+    font-family: 'JetBrains Mono', monospace; font-size: 18px;
+    letter-spacing: 0.05em; outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-input:focus { border-color: var(--amber); }
+  .search-input::placeholder { color: var(--ink-faint); }
+  .btn {
+    padding: 16px 28px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    background: var(--amber); color: var(--bg-deep); border: none;
+    cursor: pointer; transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .btn:hover:not(:disabled) { background: #f2c850; transform: translateY(-1px); }
+  .btn:disabled { background: var(--rule-hi); color: var(--ink-faint); cursor: not-allowed; }
+  .btn.secondary { background: transparent; border: 1px solid var(--rule-hi); color: var(--ink-dim); }
+  .btn.secondary:hover { color: var(--ink); border-color: var(--ink-dim); background: var(--bg-elev); }
+
+  .examples {
+    margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink-faint); letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .examples > span:first-child { padding-right: 8px; }
+  .ex-chip {
+    padding: 4px 10px; border: 1px solid var(--rule-hi);
+    color: var(--ink-dim); cursor: pointer; transition: all 0.15s;
+    border-radius: 2px;
+  }
+  .ex-chip:hover { color: var(--amber); border-color: var(--amber); }
+
+  /* PREVIEW CARD */
+  .preview {
+    background: var(--bg-panel); border: 1px solid var(--rule);
+    padding: 28px 32px; margin-bottom: 24px;
+    display: none;
+  }
+  .preview.show { display: block; }
+  .preview.error { border-color: var(--red); }
+  .preview-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--rule); padding-bottom: 12px; gap: 16px;
+  }
+  .preview-head .name { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 500; }
+  .preview-head .symbol {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--amber); letter-spacing: 0.14em;
+  }
+  .preview-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+    margin-bottom: 20px;
+  }
+  .preview-cell .label {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--ink-faint); letter-spacing: 0.14em;
+    text-transform: uppercase; margin-bottom: 6px;
+  }
+  .preview-cell .val { font-family: 'Fraunces', serif; font-size: 20px; }
+  .preview-cell .val.amber { color: var(--amber); }
+
+  .preview-meta {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink-faint); letter-spacing: 0.08em;
+    margin-bottom: 20px; padding: 10px 14px;
+    background: var(--bg-elev); border-left: 2px solid var(--amber);
+  }
+  .preview-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .preview-error {
+    color: var(--red); font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; padding: 12px 16px;
+    background: rgba(212, 87, 74, 0.08); border-left: 2px solid var(--red);
+  }
+
+  /* WORKING STATE */
+  .working {
+    background: var(--bg-panel); border: 1px solid var(--rule);
+    padding: 36px 32px; margin-bottom: 24px;
+    display: none; text-align: center;
+  }
+  .working.show { display: block; }
+  .working .label {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--amber); letter-spacing: 0.2em;
+    text-transform: uppercase; margin-bottom: 14px;
+  }
+  .working h2 {
+    font-family: 'Fraunces', serif; font-size: 26px; font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .working h2 em { font-style: italic; color: var(--amber); }
+  .working .note {
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-size: 14px; color: var(--ink-dim); margin-bottom: 20px;
+  }
+  .working .timer {
+    font-family: 'JetBrains Mono', monospace; font-size: 28px;
+    color: var(--amber); letter-spacing: 0.1em;
+    margin-bottom: 18px;
+  }
+  .working .stages {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink-faint); letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .working .stages span {
+    display: inline-block; padding: 0 8px;
+    border-right: 1px solid var(--rule-hi);
+  }
+  .working .stages span:last-child { border-right: none; }
+  .working .stages span.active { color: var(--amber); }
+
+  /* CHART DISPLAY */
+  .chart-display {
+    background: var(--bg-panel); border: 1px solid var(--rule);
+    display: none;
+  }
+  .chart-display.show { display: block; }
+  .chart-display-head {
+    padding: 16px 24px; border-bottom: 1px solid var(--rule);
+    background: var(--bg-elev);
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 16px; flex-wrap: wrap;
+  }
+  .chart-display-head h2 {
+    font-family: 'Fraunces', serif; font-size: 18px; font-weight: 500;
+  }
+  .chart-display-head h2 em { font-style: italic; color: var(--amber); }
+  .chart-display-head .meta {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink-faint); letter-spacing: 0.1em;
+  }
+  .chart-display-head .actions { display: flex; gap: 10px; }
+  .chart-display iframe {
+    width: 100%; height: 1400px; border: none; display: block;
+    background: var(--bg-deep);
+  }
+
+  /* RECENT */
+  .recent { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--rule); }
+  .recent h3 {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink-faint); letter-spacing: 0.16em;
+    text-transform: uppercase; margin-bottom: 14px;
+  }
+  .recent-list { display: flex; flex-wrap: wrap; gap: 10px; }
+  .recent-chip {
+    padding: 8px 14px; background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink-dim); cursor: pointer;
+    transition: all 0.15s; text-decoration: none;
+  }
+  .recent-chip:hover { color: var(--amber); border-color: var(--amber); }
+
+  .footnote {
+    margin-top: 32px; padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink-faint); letter-spacing: 0.08em;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  }
+
+  /* PLACEHOLDER BANNER */
+  .placeholder-banner {
+    background: rgba(212, 169, 62, 0.08);
+    border: 1px solid var(--amber);
+    color: var(--amber);
+    padding: 14px 20px; margin-bottom: 24px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    line-height: 1.6; letter-spacing: 0.04em;
+    display: none;
+  }
+  .placeholder-banner.show { display: block; }
+  .placeholder-banner strong { color: #f2c850; }
+  .placeholder-banner code {
+    background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 2px;
+    font-size: 10px;
+  }
+
+  @keyframes pulse { 50% { opacity: 0.4; } }
+  .pulsing { animation: pulse 1.6s ease-in-out infinite; }
+
+  @keyframes spin {
+    0%, 100% { transform: rotate(0); }
+    50% { transform: rotate(180deg); }
+  }
+  .spinner {
+    display: inline-block; width: 14px; height: 14px;
+    margin-right: 8px; vertical-align: middle;
+    border: 2px solid currentColor; border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @media (max-width: 900px) {
+    .preview-grid { grid-template-columns: repeat(2, 1fr); }
+    .mast-left h1 { font-size: 30px; }
+    .search-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="mast">
+    <div class="mast-left">
+      <div class="kicker">Forensic Stock Chart · Built on Claude Agent SDK</div>
+      <h1>Type a <em>ticker</em>.<br>Get the <em>full forensic.</em></h1>
+      <p class="sub">Enter any global stock symbol. Claude researches the catalysts, scandals, and turning points — then renders an editorial-grade chart with events pinned to the price action.</p>
+    </div>
+    <div class="mast-right">
+      <div class="limit-info" id="limit-info">
+        <div>Rate limits</div>
+        <div><strong id="limit-generate">—</strong> charts</div>
+        <div><strong id="limit-resolve">—</strong> lookups</div>
+      </div>
+      <form class="logout-form" method="post" action="/logout">
+        <button type="submit">Sign out</button>
+      </form>
+    </div>
+  </header>
+
+  <!-- PLACEHOLDER WARNING -->
+  <div class="placeholder-banner" id="placeholder-banner">
+    <strong>⚠ Example skill active.</strong> This deployment is running the placeholder <code>example-stock-chart</code> skill that ships with the public repo.
+    Charts produced will be minimal stubs, not real forensic analysis. To get real charts, replace the skill — see the README's <strong>"Bring your own skill"</strong> section.
+  </div>
+
+  <!-- STEP 1: SEARCH -->
+  <section class="search-section">
+    <div class="search-row">
+      <input type="text" id="ticker-input" class="search-input"
+             placeholder="NVDA · AAPL · TSE:3563 · KRX:005930 · HKEX:9988"
+             autofocus>
+      <button id="resolve-btn" class="btn">Look up</button>
+    </div>
+    <div class="examples">
+      <span>Try:</span>
+      <span class="ex-chip" data-t="NVDA">NVDA</span>
+      <span class="ex-chip" data-t="TSLA">TSLA</span>
+      <span class="ex-chip" data-t="TSE:3563">TSE:3563 (Sushiro)</span>
+      <span class="ex-chip" data-t="KRX:005930">KRX:005930 (Samsung)</span>
+      <span class="ex-chip" data-t="HKEX:9988">HKEX:9988 (Alibaba HK)</span>
+      <span class="ex-chip" data-t="LSE:HSBA">LSE:HSBA (HSBC)</span>
+    </div>
+  </section>
+
+  <!-- STEP 2: PREVIEW -->
+  <section class="preview" id="preview">
+    <div id="preview-content"></div>
+  </section>
+
+  <!-- WORKING -->
+  <section class="working" id="working">
+    <div class="label"><span class="spinner"></span>Claude is working</div>
+    <h2><em>Researching</em> the forensic record</h2>
+    <p class="note">This typically takes 2-5 minutes. Claude is reading the skill, pulling price data, and curating events from the web.</p>
+    <div class="timer pulsing" id="timer">00:00</div>
+    <div class="stages">
+      <span class="active" id="stage-research">Research</span>
+      <span id="stage-data">Data</span>
+      <span id="stage-render">Render</span>
+    </div>
+  </section>
+
+  <!-- CHART -->
+  <section class="chart-display" id="chart-display">
+    <div class="chart-display-head">
+      <h2>The <em>Chart</em></h2>
+      <div class="meta" id="chart-meta"></div>
+      <div class="actions">
+        <a id="chart-new-tab" target="_blank" class="btn secondary" href="">Open ↗</a>
+        <a id="chart-download" class="btn secondary" href="" download>Download</a>
+        <button class="btn" onclick="resetUI()">New chart</button>
+      </div>
+    </div>
+    <iframe id="chart-iframe" src="about:blank"></iframe>
+  </section>
+
+  <!-- RECENT -->
+  <section class="recent" id="recent">
+    <h3>Recently generated</h3>
+    <div class="recent-list" id="recent-list"></div>
+  </section>
+
+  <div class="footnote">
+    <span>POWERED BY · CLAUDE AGENT SDK + FORENSIC-PRICE-CHART SKILL</span>
+    <span>NOT INVESTMENT ADVICE</span>
+  </div>
+
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const fmtBig = (n) => {
+  if (n == null) return '—';
+  if (n >= 1e12) return (n/1e12).toFixed(2) + 'T';
+  if (n >= 1e9)  return (n/1e9).toFixed(2)  + 'B';
+  if (n >= 1e6)  return (n/1e6).toFixed(2)  + 'M';
+  return Number(n).toLocaleString();
+};
+const fmtPx = (n, ccy) => {
+  if (n == null) return '—';
+  const sym = { USD:'$', JPY:'¥', KRW:'₩', HKD:'HK$', CNY:'¥', GBP:'£', EUR:'€', TWD:'NT$', AUD:'A$', CAD:'C$' }[ccy] || '';
+  return sym + Number(n).toLocaleString(undefined, { maximumFractionDigits: 2 });
+};
+
+const input = $('ticker-input');
+const resolveBtn = $('resolve-btn');
+
+input.addEventListener('keydown', (e) => { if (e.key === 'Enter') resolveBtn.click(); });
+document.querySelectorAll('.ex-chip').forEach(chip => {
+  chip.addEventListener('click', () => { input.value = chip.dataset.t; resolveBtn.click(); });
+});
+
+resolveBtn.addEventListener('click', async () => {
+  const ticker = input.value.trim();
+  if (!ticker) return;
+  resolveBtn.disabled = true;
+  resolveBtn.innerHTML = '<span class="spinner"></span>Looking up...';
+  hideAll();
+  try {
+    const data = await safeFetch('/api/resolve', { ticker });
+    if (data) showPreview(data);
+  } catch (e) {
+    showPreview({ error: e.message });
+  } finally {
+    resolveBtn.disabled = false;
+    resolveBtn.textContent = 'Look up';
+  }
+});
+
+/**
+ * Wrapper around fetch that:
+ *  - sends JSON body to API endpoints
+ *  - redirects to /login on 401 (auth expired)
+ *  - returns a friendly error message on 429 (rate limit)
+ *  - throws Error with message on other failures
+ */
+async function safeFetch(url, body) {
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (res.status === 401) {
+    // Auth expired — bounce to login
+    window.location.href = '/login';
+    return null;
+  }
+  if (res.status === 429) {
+    // Rate limit — try to extract retry-after info
+    let detail = 'Rate limit reached. Please try again later.';
+    try {
+      const j = await res.json();
+      if (j.detail) detail = `Rate limit reached: ${j.detail}. Try again later.`;
+    } catch {}
+    throw new Error(detail);
+  }
+  if (!res.ok) {
+    let detail = res.statusText;
+    try {
+      const j = await res.json();
+      if (j.detail) detail = j.detail;
+    } catch {}
+    throw new Error(detail);
+  }
+  return await res.json();
+}
+
+function hideAll() {
+  $('preview').classList.remove('show', 'error');
+  $('working').classList.remove('show');
+  $('chart-display').classList.remove('show');
+}
+
+function showPreview(d) {
+  const p = $('preview');
+  p.classList.add('show');
+  if (d.error) {
+    p.classList.add('error');
+    $('preview-content').innerHTML = `<div class="preview-error">⚠ ${d.error}</div>`;
+    return;
+  }
+  p.classList.remove('error');
+  const enginePath = d.is_us
+    ? 'TradingView live widget · US listing'
+    : `yfinance + custom SVG · ${d.market}`;
+
+  $('preview-content').innerHTML = `
+    <div class="preview-head">
+      <div class="name">${d.company_name || d.raw_input}</div>
+      <div class="symbol">${d.tradingview_symbol}</div>
+    </div>
+    <div class="preview-grid">
+      <div class="preview-cell">
+        <div class="label">Latest Price</div>
+        <div class="val amber">${fmtPx(d.current_price, d.currency)}</div>
+      </div>
+      <div class="preview-cell">
+        <div class="label">Market Cap</div>
+        <div class="val">${fmtBig(d.market_cap)}</div>
+      </div>
+      <div class="preview-cell">
+        <div class="label">52w High</div>
+        <div class="val">${fmtPx(d.week_52_high, d.currency)}</div>
+      </div>
+      <div class="preview-cell">
+        <div class="label">52w Low</div>
+        <div class="val">${fmtPx(d.week_52_low, d.currency)}</div>
+      </div>
+    </div>
+    <div class="preview-meta">CHART ENGINE · ${enginePath}</div>
+    <div class="preview-actions">
+      <button class="btn" id="generate-btn">Generate forensic chart →</button>
+      <button class="btn secondary" onclick="document.getElementById('preview').classList.remove('show')">Cancel</button>
+    </div>
+  `;
+  $('generate-btn').addEventListener('click', () => startGeneration(d.raw_input));
+}
+
+async function startGeneration(ticker) {
+  $('preview').classList.remove('show');
+  $('working').classList.add('show');
+  $('chart-display').classList.remove('show');
+  startTimer();
+  cycleStages();
+
+  try {
+    const data = await safeFetch('/api/generate', { ticker });
+    if (!data) return; // redirected to login
+    stopTimer();
+    showChart(data);
+    loadRecent();
+  } catch (e) {
+    stopTimer();
+    $('working').classList.remove('show');
+    $('preview').classList.add('show', 'error');
+    $('preview-content').innerHTML = `<div class="preview-error">⚠ ${e.message}</div>`;
+  }
+}
+
+function showChart(d) {
+  $('working').classList.remove('show');
+  const cd = $('chart-display');
+  cd.classList.add('show');
+  $('chart-iframe').src = d.url;
+  $('chart-new-tab').href = d.url;
+  $('chart-download').href = d.url;
+  $('chart-download').setAttribute('download', d.filename);
+  const cacheLabel = d.cached ? `CACHED · ${d.cache_age_hours}h ago · ${d.size_kb} KB` : `FRESH · ${d.size_kb} KB`;
+  $('chart-meta').textContent = cacheLabel;
+  cd.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function resetUI() {
+  hideAll();
+  input.value = '';
+  input.focus();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Timer + stage cycling
+let timerStart = null, timerInterval = null, stageInterval = null;
+function startTimer() {
+  timerStart = Date.now();
+  timerInterval = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - timerStart) / 1000);
+    const m = String(Math.floor(elapsed / 60)).padStart(2, '0');
+    const s = String(elapsed % 60).padStart(2, '0');
+    $('timer').textContent = `${m}:${s}`;
+  }, 1000);
+}
+function stopTimer() {
+  clearInterval(timerInterval);
+  clearInterval(stageInterval);
+}
+function cycleStages() {
+  // Best-effort visual: cycle the stage badges so the user has something moving
+  // Real backend is opaque (blocking call) but this is honest about typical phases
+  const stages = ['stage-research', 'stage-data', 'stage-render'];
+  let i = 0;
+  stages.forEach(s => $(s).classList.remove('active'));
+  $(stages[0]).classList.add('active');
+  stageInterval = setInterval(() => {
+    stages.forEach(s => $(s).classList.remove('active'));
+    i = (i + 1) % stages.length;
+    $(stages[i]).classList.add('active');
+  }, 60000); // shift roughly every minute
+}
+
+// Recent
+async function loadRecent() {
+  try {
+    const res = await fetch('/api/recent');
+    if (res.status === 401) { window.location.href = '/login'; return; }
+    const items = await res.json();
+    if (!items.length) {
+      $('recent-list').innerHTML = '<span style="color:var(--ink-faint); font-family: \'JetBrains Mono\', monospace; font-size: 11px;">No charts generated yet</span>';
+      return;
+    }
+    $('recent-list').innerHTML = items.map(it =>
+      `<a class="recent-chip" href="${it.url}" target="_blank">${it.filename.replace(/_Forensic\.html$/, '')} · ${it.size_kb}KB</a>`
+    ).join('');
+  } catch {}
+}
+
+// Rate limit display
+async function loadLimits() {
+  try {
+    const res = await fetch('/api/limits');
+    if (res.status === 401) { window.location.href = '/login'; return; }
+    const data = await res.json();
+    $('limit-generate').textContent = data.generate;
+    $('limit-resolve').textContent = data.resolve;
+    if (data.is_placeholder) {
+      $('placeholder-banner').classList.add('show');
+    }
+  } catch {}
+}
+
+loadRecent();
+loadLimits();
+</script>
+
+</body>
+</html>

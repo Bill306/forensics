@@ -1,0 +1,86 @@
+<svg viewBox="0 0 1400 900" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <rect width="1400" height="900" fill="#0c1410"/>
+
+  <!-- ============== MASTHEAD (compact) ============== -->
+  <g transform="translate(60, 50)">
+    <text x="0" y="0" font-family="'JetBrains Mono', monospace" font-size="11" fill="#d4a93e" letter-spacing="2.2px">FORENSIC STOCK CHART · BUILT ON CLAUDE AGENT SDK</text>
+    <text x="0" y="50" font-family="Georgia, serif" font-size="36" fill="#e8e4d8" font-weight="400">Type a <tspan fill="#d4a93e" font-style="italic" font-weight="300">ticker</tspan>. Get the <tspan fill="#d4a93e" font-style="italic" font-weight="300">full forensic.</tspan></text>
+
+    <g transform="translate(1100, 38)">
+      <text x="0" y="0" font-family="'JetBrains Mono', monospace" font-size="10" fill="#6b726b" letter-spacing="1.4px" text-anchor="end">RATE LIMITS</text>
+      <text x="0" y="22" font-family="'JetBrains Mono', monospace" font-size="11" fill="#6b726b" letter-spacing="1.4px" text-anchor="end"><tspan fill="#d4a93e" font-weight="500">10/DAY</tspan> CHARTS</text>
+      <g transform="translate(40, 38)">
+        <rect x="0" y="0" width="100" height="32" fill="none" stroke="#2f3d36"/>
+        <text x="50" y="20" font-family="'JetBrains Mono', monospace" font-size="10" fill="#9ca39a" text-anchor="middle" letter-spacing="1.6px">SIGN OUT</text>
+      </g>
+    </g>
+    <line x1="0" y1="100" x2="1280" y2="100" stroke="#1f2a25"/>
+  </g>
+
+  <!-- ============== SEARCH (compact) ============== -->
+  <g transform="translate(60, 200)">
+    <rect x="0" y="0" width="1280" height="100" fill="#121c18" stroke="#1f2a25"/>
+    <rect x="32" y="20" width="1080" height="58" fill="#0c1410" stroke="#2f3d36"/>
+    <text x="52" y="56" font-family="'JetBrains Mono', monospace" font-size="18" fill="#e8e4d8" letter-spacing="0.9">NVDA</text>
+    <g transform="translate(1132, 20)">
+      <rect x="0" y="0" width="116" height="58" fill="#d4a93e"/>
+      <text x="58" y="35" font-family="'JetBrains Mono', monospace" font-size="11" fill="#0c1410" text-anchor="middle" letter-spacing="1.8px" font-weight="500">LOOK UP</text>
+    </g>
+  </g>
+
+  <!-- ============== PREVIEW CARD ============== -->
+  <g transform="translate(60, 332)">
+    <rect x="0" y="0" width="1280" height="296" fill="#121c18" stroke="#1f2a25"/>
+
+    <!-- header row -->
+    <g transform="translate(32, 32)">
+      <text x="0" y="0" font-family="Georgia, serif" font-size="28" fill="#e8e4d8" font-weight="500">NVIDIA Corporation</text>
+      <text x="1216" y="0" font-family="'JetBrains Mono', monospace" font-size="13" fill="#d4a93e" letter-spacing="1.6px" text-anchor="end">NASDAQ:NVDA</text>
+      <line x1="0" y1="22" x2="1216" y2="22" stroke="#1f2a25"/>
+    </g>
+
+    <!-- 4 cells -->
+    <g transform="translate(32, 86)">
+      <g transform="translate(0, 0)">
+        <text x="0" y="0" font-family="'JetBrains Mono', monospace" font-size="10" fill="#6b726b" letter-spacing="1.5px">LATEST PRICE</text>
+        <text x="0" y="32" font-family="Georgia, serif" font-size="28" fill="#d4a93e">$850.00</text>
+      </g>
+      <g transform="translate(304, 0)">
+        <text x="0" y="0" font-family="'JetBrains Mono', monospace" font-size="10" fill="#6b726b" letter-spacing="1.5px">MARKET CAP</text>
+        <text x="0" y="32" font-family="Georgia, serif" font-size="28" fill="#e8e4d8">2.10T</text>
+      </g>
+      <g transform="translate(608, 0)">
+        <text x="0" y="0" font-family="'JetBrains Mono', monospace" font-size="10" fill="#6b726b" letter-spacing="1.5px">52W HIGH</text>
+        <text x="0" y="32" font-family="Georgia, serif" font-size="28" fill="#e8e4d8">$974.00</text>
+      </g>
+      <g transform="translate(912, 0)">
+        <text x="0" y="0" font-family="'JetBrains Mono', monospace" font-size="10" fill="#6b726b" letter-spacing="1.5px">52W LOW</text>
+        <text x="0" y="32" font-family="Georgia, serif" font-size="28" fill="#e8e4d8">$400.00</text>
+      </g>
+    </g>
+
+    <!-- engine meta -->
+    <g transform="translate(32, 168)">
+      <rect x="0" y="0" width="1216" height="36" fill="#182521"/>
+      <rect x="0" y="0" width="2" height="36" fill="#d4a93e"/>
+      <text x="14" y="23" font-family="'JetBrains Mono', monospace" font-size="11" fill="#6b726b" letter-spacing="1px">CHART ENGINE · TRADINGVIEW LIVE WIDGET · US LISTING</text>
+    </g>
+
+    <!-- actions -->
+    <g transform="translate(32, 226)">
+      <rect x="0" y="0" width="280" height="44" fill="#d4a93e"/>
+      <text x="140" y="28" font-family="'JetBrains Mono', monospace" font-size="11" fill="#0c1410" text-anchor="middle" letter-spacing="1.8px" font-weight="500">GENERATE FORENSIC CHART →</text>
+      <g transform="translate(296, 0)">
+        <rect x="0" y="0" width="100" height="44" fill="none" stroke="#2f3d36"/>
+        <text x="50" y="28" font-family="'JetBrains Mono', monospace" font-size="11" fill="#9ca39a" text-anchor="middle" letter-spacing="1.8px">CANCEL</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ============== FOOTER ============== -->
+  <g transform="translate(60, 850)">
+    <line x1="0" y1="0" x2="1280" y2="0" stroke="#1f2a25"/>
+    <text x="0" y="22" font-family="'JetBrains Mono', monospace" font-size="10" fill="#6b726b" letter-spacing="1px">POWERED BY · CLAUDE AGENT SDK + FORENSIC-PRICE-CHART SKILL</text>
+    <text x="1280" y="22" font-family="'JetBrains Mono', monospace" font-size="10" fill="#6b726b" letter-spacing="1px" text-anchor="end">NOT INVESTMENT ADVICE</text>
+  </g>
+</svg>

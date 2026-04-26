@@ -1,0 +1,120 @@
+<svg viewBox="0 0 1400 900" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <!-- bg -->
+  <rect width="1400" height="900" fill="#0c1410"/>
+
+  <!-- noise overlay simulation: tiny dots -->
+  <g opacity="0.03" fill="#e8e4d8">
+    <circle cx="50" cy="120" r="0.8"/><circle cx="280" cy="340" r="0.6"/><circle cx="940" cy="80" r="0.7"/>
+    <circle cx="1180" cy="540" r="0.6"/><circle cx="660" cy="780" r="0.7"/><circle cx="380" cy="640" r="0.6"/>
+    <circle cx="120" cy="500" r="0.8"/><circle cx="1080" cy="220" r="0.6"/>
+  </g>
+
+  <!-- ============== MASTHEAD ============== -->
+  <g transform="translate(60, 60)">
+    <!-- left -->
+    <text x="0" y="0" font-family="'JetBrains Mono', monospace" font-size="11" fill="#d4a93e" letter-spacing="2.2px">FORENSIC STOCK CHART · BUILT ON CLAUDE AGENT SDK</text>
+    <text x="0" y="58" font-family="Georgia, serif" font-size="44" fill="#e8e4d8" font-weight="400" letter-spacing="-0.4">Type a <tspan fill="#d4a93e" font-style="italic" font-weight="300">ticker</tspan>.</text>
+    <text x="0" y="106" font-family="Georgia, serif" font-size="44" fill="#e8e4d8" font-weight="400" letter-spacing="-0.4">Get the <tspan fill="#d4a93e" font-style="italic" font-weight="300">full forensic.</tspan></text>
+    <text x="0" y="142" font-family="Georgia, serif" font-style="italic" font-size="16" fill="#9ca39a">Enter any global stock symbol. Claude researches the catalysts, scandals,</text>
+    <text x="0" y="164" font-family="Georgia, serif" font-style="italic" font-size="16" fill="#9ca39a">and turning points — then renders an editorial-grade chart.</text>
+
+    <!-- right: rate limit + sign-out -->
+    <g transform="translate(1100, 90)">
+      <text x="0" y="0" font-family="'JetBrains Mono', monospace" font-size="10" fill="#6b726b" letter-spacing="1.4px" text-anchor="end">RATE LIMITS</text>
+      <text x="0" y="22" font-family="'JetBrains Mono', monospace" font-size="11" fill="#6b726b" letter-spacing="1.4px" text-anchor="end"><tspan fill="#d4a93e" font-weight="500">10/DAY</tspan> CHARTS</text>
+      <text x="0" y="42" font-family="'JetBrains Mono', monospace" font-size="11" fill="#6b726b" letter-spacing="1.4px" text-anchor="end"><tspan fill="#d4a93e" font-weight="500">30/MINUTE</tspan> LOOKUPS</text>
+      <!-- sign out btn -->
+      <g transform="translate(40, 60)">
+        <rect x="0" y="0" width="100" height="32" fill="none" stroke="#2f3d36" stroke-width="1"/>
+        <text x="50" y="20" font-family="'JetBrains Mono', monospace" font-size="10" fill="#9ca39a" text-anchor="middle" letter-spacing="1.6px">SIGN OUT</text>
+      </g>
+    </g>
+
+    <!-- separator -->
+    <line x1="0" y1="200" x2="1280" y2="200" stroke="#1f2a25"/>
+  </g>
+
+  <!-- ============== SEARCH SECTION ============== -->
+  <g transform="translate(60, 304)">
+    <rect x="0" y="0" width="1280" height="178" fill="#121c18" stroke="#1f2a25"/>
+
+    <!-- input -->
+    <rect x="32" y="32" width="1080" height="58" fill="#0c1410" stroke="#2f3d36"/>
+    <text x="52" y="68" font-family="'JetBrains Mono', monospace" font-size="18" fill="#e8e4d8" letter-spacing="0.9">NVDA</text>
+    <!-- cursor -->
+    <rect x="111" y="46" width="2" height="30" fill="#d4a93e">
+      <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+    </rect>
+
+    <!-- look up button -->
+    <g transform="translate(1132, 32)">
+      <rect x="0" y="0" width="116" height="58" fill="#d4a93e"/>
+      <text x="58" y="35" font-family="'JetBrains Mono', monospace" font-size="11" fill="#0c1410" text-anchor="middle" letter-spacing="1.8px" font-weight="500">LOOK UP</text>
+    </g>
+
+    <!-- examples -->
+    <g transform="translate(32, 116)">
+      <text x="0" y="14" font-family="'JetBrains Mono', monospace" font-size="10" fill="#6b726b" letter-spacing="1.2px">TRY:</text>
+      <g transform="translate(50, 0)">
+        <rect x="0" y="0" width="56" height="22" fill="none" stroke="#2f3d36"/>
+        <text x="28" y="14" font-family="'JetBrains Mono', monospace" font-size="10" fill="#9ca39a" text-anchor="middle" letter-spacing="0.5px">NVDA</text>
+      </g>
+      <g transform="translate(115, 0)">
+        <rect x="0" y="0" width="56" height="22" fill="none" stroke="#2f3d36"/>
+        <text x="28" y="14" font-family="'JetBrains Mono', monospace" font-size="10" fill="#9ca39a" text-anchor="middle" letter-spacing="0.5px">TSLA</text>
+      </g>
+      <g transform="translate(180, 0)">
+        <rect x="0" y="0" width="158" height="22" fill="none" stroke="#2f3d36"/>
+        <text x="79" y="14" font-family="'JetBrains Mono', monospace" font-size="10" fill="#9ca39a" text-anchor="middle" letter-spacing="0.5px">TSE:3563 (SUSHIRO)</text>
+      </g>
+      <g transform="translate(347, 0)">
+        <rect x="0" y="0" width="178" height="22" fill="none" stroke="#2f3d36"/>
+        <text x="89" y="14" font-family="'JetBrains Mono', monospace" font-size="10" fill="#9ca39a" text-anchor="middle" letter-spacing="0.5px">KRX:005930 (SAMSUNG)</text>
+      </g>
+      <g transform="translate(534, 0)">
+        <rect x="0" y="0" width="194" height="22" fill="none" stroke="#2f3d36"/>
+        <text x="97" y="14" font-family="'JetBrains Mono', monospace" font-size="10" fill="#9ca39a" text-anchor="middle" letter-spacing="0.5px">HKEX:9988 (ALIBABA HK)</text>
+      </g>
+      <g transform="translate(737, 0)">
+        <rect x="0" y="0" width="148" height="22" fill="none" stroke="#2f3d36"/>
+        <text x="74" y="14" font-family="'JetBrains Mono', monospace" font-size="10" fill="#9ca39a" text-anchor="middle" letter-spacing="0.5px">LSE:HSBA (HSBC)</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ============== RECENT CHARTS LIST (slim) ============== -->
+  <g transform="translate(60, 540)">
+    <line x1="0" y1="0" x2="1280" y2="0" stroke="#1f2a25"/>
+    <text x="0" y="32" font-family="'JetBrains Mono', monospace" font-size="10" fill="#6b726b" letter-spacing="1.7px">RECENTLY GENERATED</text>
+
+    <g transform="translate(0, 50)">
+      <g transform="translate(0, 0)">
+        <rect x="0" y="0" width="180" height="34" fill="#121c18" stroke="#1f2a25"/>
+        <text x="14" y="22" font-family="'JetBrains Mono', monospace" font-size="11" fill="#9ca39a">NASDAQ_NVDA · 76.4KB</text>
+      </g>
+      <g transform="translate(192, 0)">
+        <rect x="0" y="0" width="160" height="34" fill="#121c18" stroke="#1f2a25"/>
+        <text x="14" y="22" font-family="'JetBrains Mono', monospace" font-size="11" fill="#9ca39a">KRX_005930 · 70.5KB</text>
+      </g>
+      <g transform="translate(364, 0)">
+        <rect x="0" y="0" width="148" height="34" fill="#121c18" stroke="#1f2a25"/>
+        <text x="14" y="22" font-family="'JetBrains Mono', monospace" font-size="11" fill="#9ca39a">TSE_3563 · 69.4KB</text>
+      </g>
+      <g transform="translate(524, 0)">
+        <rect x="0" y="0" width="172" height="34" fill="#121c18" stroke="#1f2a25"/>
+        <text x="14" y="22" font-family="'JetBrains Mono', monospace" font-size="11" fill="#9ca39a">HKEX_9988 · 71.8KB</text>
+      </g>
+      <g transform="translate(708, 0)">
+        <rect x="0" y="0" width="148" height="34" fill="#121c18" stroke="#1f2a25"/>
+        <text x="14" y="22" font-family="'JetBrains Mono', monospace" font-size="11" fill="#9ca39a">LSE_HSBA · 67.9KB</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ============== FOOTER ============== -->
+  <g transform="translate(60, 820)">
+    <line x1="0" y1="0" x2="1280" y2="0" stroke="#1f2a25"/>
+    <text x="0" y="22" font-family="'JetBrains Mono', monospace" font-size="10" fill="#6b726b" letter-spacing="1px">POWERED BY · CLAUDE AGENT SDK + FORENSIC-PRICE-CHART SKILL</text>
+    <text x="1280" y="22" font-family="'JetBrains Mono', monospace" font-size="10" fill="#6b726b" letter-spacing="1px" text-anchor="end">NOT INVESTMENT ADVICE</text>
+  </g>
+</svg>

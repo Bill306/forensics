@@ -1,0 +1,30 @@
+# ---- SECRETS / PRIVATE ASSETS ----
+# Never commit these to a public repo.
+
+# Environment files (API keys, passwords)
+.env
+.env.local
+.env.*.local
+
+# Private skills — only the example-stock-chart placeholder is committed.
+# Any other skill folder is treated as private (your own research / proprietary methodology).
+.claude/skills/*
+!.claude/skills/example-stock-chart/
+!.claude/skills/.gitkeep
+
+# Generated charts (may contain proprietary research output)
+static/charts/*.html
+!static/charts/.gitkeep
+
+# ---- PYTHON ----
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# ---- OS / EDITOR ----
+.DS_Store
+.idea/
+.vscode/
+*.swp

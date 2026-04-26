@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: forensic-stock-chart
+    runtime: python
+    region: oregon
+    plan: starter      # 512MB / shared CPU, ~$7/mo. Free tier sleeps after 15min idle, but works.
+    buildCommand: |
+      pip install -r requirements.txt && \
+      python scripts/fetch_skills.py
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT --timeout-keep-alive 600
+    healthCheckPath: /healthz
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false                   # set in dashboard, not committed
+      - key: APP_PASSWORD
+        sync: false                   # set in dashboard
+      - key: APP_SECRET_KEY
+        generateValue: true           # Render auto-generates a 256-bit random value
+      - key: SKILL_NAME
+        value: example-stock-chart    # change to your private skill name when ready
+      - key: SKILLS_BUNDLE_URL
+        sync: false                   # set in dashboard if you have a private bundle
+      - key: SKILLS_BUNDLE_TOKEN
+        sync: false                   # set in dashboard if your bundle URL needs auth
+      - key: RATE_LIMIT_GENERATE
+        value: "10/day"
+      - key: RATE_LIMIT_RESOLVE
+        value: "30/minute"
+      - key: PYTHON_VERSION
+        value: 3.11.10
+    disk:
+      name: charts
+      mountPath: /opt/render/project/src/static/charts
+      sizeGB: 1
