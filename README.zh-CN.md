@@ -4,6 +4,14 @@
 
 股价曲线每一次有意思的转折，都值得问一句：当时改变了什么？
 
+**[查看真实图表结果](docs/screenshots/05-real-samsung-chart.png)** · **[产品决策与使用导览](https://github.com/Bill306/Bill306/blob/main/projects/forensics/README.zh-CN.md)** · **[运行应用](#本地运行)**
+
+## 花一分钟查看作品
+
+打开上方保存的三星电子结果，放大查看价格变化与事件说明。公开结果是一张使用研究 Skill 生成的图表截图。生成新结果需要自行部署，提供模型配置与研究 Skill；仓库附带用于接入的示例 Skill。
+
+[产品案例](https://github.com/Bill306/Bill306/blob/main/projects/forensics/README.zh-CN.md)按照搜索、预览、生成、查看结果的流程组织，说明生成前确认研究对象、展示等待时长，以及复用近期输出并标明时间的设计。Research、Data、Render 标签按定时器轮换，用于提示处理活动。
+
 ![通过密码登录后的本地应用界面](docs/images/preview.png)
 
 一个使用 FastAPI、Claude Agent SDK 和可替换 Skill 的网页应用。输入股票代码，查看解析结果，确认后生成可以打开和下载的 HTML 图表。

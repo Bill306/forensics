@@ -6,6 +6,14 @@
 
 Every interesting bend in a price chart invites a question: what changed?
 
+**[See a real chart result](docs/screenshots/05-real-samsung-chart.png)** · **[Product decisions and walkthrough](https://github.com/Bill306/Bill306/blob/main/projects/forensics/README.md)** · **[Run the application](#local-development)**
+
+## Explore in a minute
+
+Open the saved Samsung Electronics result above and zoom in to inspect its price history and event annotations. The public result is a screenshot from a research-skill run. Generating a new result requires your own deployment, model credentials, and research Skill; the repository includes an example Skill for integration.
+
+The [product case](https://github.com/Bill306/Bill306/blob/main/projects/forensics/README.md) follows search → preview → generate → result. It explains why the research subject is confirmed before generation, how elapsed waiting time is shown, and how recent output is reused with its age visible. Research/Data/Render labels rotate on a timer as illustrative activity labels.
+
 ![The local application after password authentication](docs/images/preview.png)
 
 **Type a ticker. Get a self-contained HTML chart with annotated catalysts, scandals, and turning points.**
@@ -35,8 +43,8 @@ The skill is the brain. This repo provides:
 
 - **A FastAPI backend** that resolves any global ticker (US, HK, JP, KR, EU, ...) via yfinance and runs Claude with a skill loaded
 - **A 2-step UI** in editorial dark-green/amber design (search → preview → generate → chart)
-- **Auth + rate limiting** because each chart costs ~$1.50–3 in API spend
-- **24h caching** so repeat requests are free
+- **Auth + rate limiting** to manage access and request frequency
+- **24h caching** to reuse recent output for the same resolved symbol
 - **Render Blueprint** for one-click deploy
 
 The repo ships with a minimal **placeholder skill** so the app boots and shows something. To get real forensic charts you replace the placeholder with your own skill — see [Bring your own skill](#bring-your-own-skill).
@@ -262,12 +270,12 @@ Three things to know about wiring the SDK to a skill:
 
 | Endpoint | Default | Why |
 |---|---|---|
-| `POST /api/generate` | `10/day` | Each call costs ~$1.50–3. 10/day caps abuse at ~$30/day per user. |
+| `POST /api/generate` | `10/day` | Limits generation requests per session; usage cost depends on the model and research. |
 | `POST /api/resolve` | `30/minute` | yfinance is free but cheap to abuse. 30/min blocks scrapers. |
 
 Override via `RATE_LIMIT_GENERATE` / `RATE_LIMIT_RESOLVE` env vars. The active limits are shown in the page masthead.
 
-**Cost.** ~$1.50–3 per chart on Claude Opus 4.7 (depends on how research-heavy your skill is). With default rate limits, max API spend is ~$30/day per user. The 24h cache means repeat queries for the same ticker cost $0.
+**Cost.** Model charges depend on the selected model, research Skill, and request usage. Rate limits apply per session and control request frequency. Provider-side usage and spending controls are needed to manage an account budget. A cached result reuses the saved file without starting another research generation.
 
 ---
 
