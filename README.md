@@ -2,6 +2,10 @@
 
 # Forensic Stock Chart
 
+**English** · [简体中文](README.zh-CN.md)
+
+Every interesting bend in a price chart invites a question: what changed?
+
 **Type a ticker. Get a self-contained HTML chart with annotated catalysts, scandals, and turning points.**
 
 Built on the [Claude Agent SDK](https://docs.claude.com/en/agent-sdk) — the AI does the research, you ship the chart.
@@ -71,8 +75,8 @@ A real generated chart (Samsung Electronics, KRX:005930):
 ### 1. Push to GitHub
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/forensic-stock-chart
-cd forensic-stock-chart
+git clone https://github.com/Bill306/forensics.git
+cd forensics
 # (or fork via the GitHub UI)
 ```
 
@@ -186,8 +190,8 @@ Your skill never leaves your machine.
 ## Local development
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/forensic-stock-chart
-cd forensic-stock-chart
+git clone https://github.com/Bill306/forensics.git
+cd forensics
 
 python -m venv .venv
 source .venv/bin/activate
@@ -199,7 +203,7 @@ cp .env.example .env
 #   APP_PASSWORD
 #   APP_SECRET_KEY  (run `openssl rand -hex 32`)
 
-python app.py
+uvicorn app:app --env-file .env --host 127.0.0.1 --port 8000
 # → http://localhost:8000
 ```
 
