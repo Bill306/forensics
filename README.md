@@ -6,6 +6,8 @@
 
 Every interesting bend in a price chart invites a question: what changed?
 
+![The local application after password authentication](docs/images/preview.png)
+
 **Type a ticker. Get a self-contained HTML chart with annotated catalysts, scandals, and turning points.**
 
 Built on the [Claude Agent SDK](https://docs.claude.com/en/agent-sdk) — the AI does the research, you ship the chart.

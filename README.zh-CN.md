@@ -4,6 +4,8 @@
 
 股价曲线每一次有意思的转折，都值得问一句：当时改变了什么？
 
+![通过密码登录后的本地应用界面](docs/images/preview.png)
+
 一个使用 FastAPI、Claude Agent SDK 和可替换 Skill 的网页应用。输入股票代码，查看解析结果，确认后生成可以打开和下载的 HTML 图表。
 
 ![仓库保存的三星电子研究图表示例](docs/screenshots/05-real-samsung-chart.png)
